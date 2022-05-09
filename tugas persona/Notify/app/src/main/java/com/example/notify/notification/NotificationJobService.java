@@ -22,7 +22,7 @@ public class NotificationJobService extends JobService {
 
     @Override
     public boolean onStartJob(JobParameters jobParameters) {
-
+        String taskName = jobParameters.getExtras().getString("name");
         // Create the notification channel.
         createNotificationChannel();
 
@@ -35,7 +35,7 @@ public class NotificationJobService extends JobService {
         NotificationCompat.Builder builder = new NotificationCompat.Builder
                 (this, PRIMARY_CHANNEL_ID)
                 .setContentTitle("Notify")
-                .setContentText("Deadline Tugas Hari ini !!!")
+                .setContentText("Deadline Tugas " + taskName + " Hari ini !!!")
                 .setContentIntent(contentPendingIntent)
                 .setSmallIcon(R.drawable.ic_notify)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)

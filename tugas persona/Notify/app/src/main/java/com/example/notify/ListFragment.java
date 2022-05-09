@@ -12,6 +12,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.PersistableBundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,13 +79,15 @@ public class ListFragment extends Fragment {
         for(Task task : data) {
             LocalDate taskDate = LocalDate.parse(task.getDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
             LocalDate nowDate = LocalDate.now();
-            if (!data.isEmpty()) {
+            if (!data.isEmpty() && taskDate.equals(nowDate)) {
                 int JOB_ID = 0;
                 ComponentName serviceName = new ComponentName(getContext(), NotificationJobService.class.getName());
-                JobInfo.Builder builder = new JobInfo.Builder(JOB_ID, serviceName);
+                PersistableBundle bundle = new PersistableBundle();
+                bundle.putString("name",task.getName());
+                JobInfo.Builder builder = new JobInfo.Builder(JOB_ID, serviceName).setExtras(bundle);
                 JobInfo myJobInfo = builder.build();
                 mScheduler.schedule(myJobInfo);
-                break;
+                JOB_ID++;
             }
         }
     }
