@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.PersistableBundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,7 @@ import java.util.List;
 
 public class ListFragment extends Fragment {
     private TaskViewModel taskViewModel;
-    private List<Task> data;
+    private static List<Task> dataTask;
     private Button add_btn, delete_btn;
     private JobScheduler mScheduler;
 
@@ -43,7 +44,7 @@ public class ListFragment extends Fragment {
 
         taskViewModel = new ViewModelProvider(this).get(TaskViewModel.class);
         taskViewModel.getAllTasks().observe(getViewLifecycleOwner(), data -> {
-            this.data = data;
+            dataTask = data;
             adapter.submitList(data);
             createNotification(data);
         });
@@ -66,7 +67,8 @@ public class ListFragment extends Fragment {
                         getArguments().getString("date"));
                 taskViewModel.insert(task);
             } else if (getArguments().getString("request").equals("delete")) {
-                taskViewModel.delete(data.get(getArguments().getInt("id")));
+                int pos = getArguments().getInt("id")-1;
+                taskViewModel.delete(dataTask.get(pos));
             } else if (getArguments().getString("request").equals("update")) {
                 Task task = new Task(
                         getArguments().getString("name"),
