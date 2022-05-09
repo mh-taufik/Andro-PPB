@@ -23,6 +23,7 @@ public class NotificationJobService extends JobService {
     @Override
     public boolean onStartJob(JobParameters jobParameters) {
         String taskName = jobParameters.getExtras().getString("name");
+        int JOB_ID = jobParameters.getExtras().getInt("JOB_ID");
         // Create the notification channel.
         createNotificationChannel();
 
@@ -42,7 +43,7 @@ public class NotificationJobService extends JobService {
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setAutoCancel(true);
 
-        mNotifyManager.notify(0, builder.build());
+        mNotifyManager.notify(JOB_ID, builder.build());
         return false;
     }
 

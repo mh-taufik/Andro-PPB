@@ -37,7 +37,7 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
-                bundle.putInt("request",2);
+                bundle.putString("request","delete");
                 bundle.putInt("id",id);
                 Navigation.findNavController(view).navigate(R.id.action_listFragment_to_itself, bundle);
             }
@@ -46,6 +46,7 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
+                bundle.putInt("id",id);
                 bundle.putString("name",name);
                 bundle.putString("date",date);
                 bundle.putString("description",description);

@@ -22,10 +22,10 @@ import java.util.Calendar;
 
 public class AddFragment extends Fragment {
 
-    private EditText mName, mDesciption;
+    private EditText mName, mDescription;
     private TextView mDate;
-    private ImageView mDatePicker;
-    private Button save_btn, back_btn;
+    private ImageView mDatePicker, back_btn;
+    private Button save_btn;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
 
     @Override
@@ -35,7 +35,7 @@ public class AddFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_add, container, false);
 
         mName = view.findViewById(R.id.add_text_name);
-        mDesciption = view.findViewById(R.id.add_text_description);
+        mDescription = view.findViewById(R.id.add_text_description);
         mDate = view.findViewById(R.id.add_text_date);
         mDatePicker = view.findViewById(R.id.date_input);
         mDatePicker.setOnClickListener(new View.OnClickListener() {
@@ -74,7 +74,7 @@ public class AddFragment extends Fragment {
             }
         };
 
-        back_btn = view.findViewById(R.id.back_btn);
+        back_btn = view.findViewById(R.id.add_back);
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,18 +83,37 @@ public class AddFragment extends Fragment {
         });
 
         save_btn = view.findViewById(R.id.save_btn);
-        save_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //TODO: tambah kodingan insert ke room database
-                Bundle bundle = new Bundle();
-                bundle.putInt("request", 1);
-                bundle.putString("name", mName.getText().toString());
-                bundle.putString("description", mDesciption.getText().toString());
-                bundle.putString("date", mDate.getText().toString());
-                Navigation.findNavController(view).navigate(R.id.action_addFragment_to_listFragment, bundle);
-            }
-        });
+
+        if (getArguments() != null){
+            mName.setText(getArguments().getString("name"));
+            mDescription.setText(getArguments().getString("description"));
+            mDate.setText(getArguments().getString("date"));
+            save_btn.setText("Update");
+            save_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("request", "update");
+                    bundle.putInt("id", getArguments().getInt("id"));
+                    bundle.putString("name", mName.getText().toString());
+                    bundle.putString("description", mDescription.getText().toString());
+                    bundle.putString("date", mDate.getText().toString());
+                    Navigation.findNavController(view).navigate(R.id.action_addFragment_to_listFragment, bundle);
+                }
+            });
+        }else{
+            save_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("request", "insert");
+                    bundle.putString("name", mName.getText().toString());
+                    bundle.putString("description", mDescription.getText().toString());
+                    bundle.putString("date", mDate.getText().toString());
+                    Navigation.findNavController(view).navigate(R.id.action_addFragment_to_listFragment, bundle);
+                }
+            });
+        }
 
         return view;
     }

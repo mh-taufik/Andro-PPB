@@ -18,10 +18,11 @@
     <TextView
         android:id="@+id/tittle_2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:fontFamily="@font/secular_one"
         android:text="Daftar Tugas"
         android:textAlignment="center"
+        android:gravity="center_vertical"
         android:textAllCaps="true"
         android:textColor="@color/white"
         android:textSize="38dp"

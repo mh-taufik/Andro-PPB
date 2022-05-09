@@ -27,7 +27,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-
 public class ListFragment extends Fragment {
     private TaskViewModel taskViewModel;
     private List<Task> data;
@@ -44,12 +43,12 @@ public class ListFragment extends Fragment {
 
         taskViewModel = new ViewModelProvider(this).get(TaskViewModel.class);
         taskViewModel.getAllTasks().observe(getViewLifecycleOwner(), data -> {
+            this.data = data;
             adapter.submitList(data);
             createNotification(data);
         });
 
         mScheduler = (JobScheduler) getContext().getSystemService(Context.JOB_SCHEDULER_SERVICE);
-        delete_btn = view.findViewById(R.id.finish_btn);
         add_btn = view.findViewById(R.id.add_btn);
         add_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,14 +59,21 @@ public class ListFragment extends Fragment {
 
         //TODO: get bundle of request from another fragment
         if (getArguments() != null) {
-            if (getArguments().getInt("request") == 1) {
+            if (getArguments().getString("request").equals("insert")) {
                 Task task = new Task(
                         getArguments().getString("name"),
                         getArguments().getString("description"),
                         getArguments().getString("date"));
                 taskViewModel.insert(task);
-            } else if (getArguments().getInt("request") == 2) {
+            } else if (getArguments().getString("request").equals("delete")) {
                 taskViewModel.delete(data.get(getArguments().getInt("id")));
+            } else if (getArguments().getString("request").equals("update")) {
+                Task task = new Task(
+                        getArguments().getString("name"),
+                        getArguments().getString("description"),
+                        getArguments().getString("date"));
+                task.setId(getArguments().getInt("id"));
+                taskViewModel.update(task);
             }
         }
 
@@ -84,6 +90,7 @@ public class ListFragment extends Fragment {
                 ComponentName serviceName = new ComponentName(getContext(), NotificationJobService.class.getName());
                 PersistableBundle bundle = new PersistableBundle();
                 bundle.putString("name",task.getName());
+                bundle.putInt("name",JOB_ID);
                 JobInfo.Builder builder = new JobInfo.Builder(JOB_ID, serviceName).setExtras(bundle);
                 JobInfo myJobInfo = builder.build();
                 mScheduler.schedule(myJobInfo);

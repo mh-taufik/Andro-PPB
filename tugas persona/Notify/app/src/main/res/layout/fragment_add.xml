@@ -18,20 +18,30 @@
 
     <TextView
         android:id="@+id/tittle_1"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:fontFamily="@font/secular_one"
+        android:gravity="center"
         android:text="Tambah Tugas"
         android:textAllCaps="true"
         android:textColor="@color/white"
-        android:textAlignment="center"
         android:textSize="38dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/spinner_1"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/spinner_1"
+        app:layout_constraintEnd_toEndOf="@id/spinner_1"
+        app:layout_constraintStart_toStartOf="@id/spinner_1"
+        app:layout_constraintTop_toTopOf="@id/spinner_1" />
+
+    <ImageView
+        android:id="@+id/add_back"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:src="@drawable/ic_back"
+        android:clickable="true"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/spinner" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -48,7 +58,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner">
+        app:layout_constraintTop_toBottomOf="@+id/spinner_1">
 
         <TextView
             android:id="@+id/tittle_text_name"

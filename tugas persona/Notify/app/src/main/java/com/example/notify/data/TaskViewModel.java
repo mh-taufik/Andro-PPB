@@ -30,4 +30,8 @@ public class TaskViewModel extends AndroidViewModel {
     public void delete(Task task){
         mRepository.delete(task);
     }
+
+    public void update(Task task){
+        mRepository.update(task);
+    }
 }
